@@ -8,7 +8,7 @@ function sendAjax(order) {
 		success: function (response) {
 			console.log(response);
 			if(response === false){
-				alert('А не менялось ничче!');
+				alert('Изменений нет!');
 			}else{
 				location.reload();
 			}
@@ -17,8 +17,6 @@ function sendAjax(order) {
 			console.log(error1);
 			console.log(error2);
 			console.log(error3);
-
-			alert('Хрень Однако');
 		},
 		dataType:'json'
 	});
