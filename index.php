@@ -23,7 +23,9 @@ $a->init();
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 
 ?><div class="container">
-
+<div class="inp">
+			<button class="btn btn-success" onclick="sendAjax('check');">Проверить</button>
+		</div>
 		<?php
 		$a->render();
 		$APPLICATION->IncludeComponent("bitrix:catalog", "template1", ["ACTION_VARIABLE" => "action",    // Название переменной, в которой передается действие
