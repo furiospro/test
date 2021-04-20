@@ -57,18 +57,12 @@ class In {
 
 			$this->getElemFromBlock($this->iblock_id);
 
-			if($this->getSize($this->result) == $_SESSION['data_size']=$this->getSize($this->arCusResult)){
+			if($this->getSize($this->result) == $_SESSION['data_size']){
 
 			}else{
+				$this->update($this->arCusResult,$this->result,$this->iblock_id);
 
-				$this->delItem($this->arCusResult);
-
-
-				if($id = $this->addToBlock($this->result,$this->iblock_id)){
-					$this->getElemFromBlock($this->iblock_id);
-
-				};
-				$_SESSION['data_size']=$this->getSize($this->arCusResult);
+				$this->getElemFromBlock($this->iblock_id);
 
 			}
 
@@ -119,7 +113,7 @@ class In {
 
 		$arSelect = ["ID"];
 		$arResult = [];
-		$arFilter = ["IBLOCK_ID"=> 2, "DATA_ACTIVE_FROM" => "ASC", "ACTIVE" => "Y"];
+		$arFilter = ["IBLOCK_ID"=> 2, "DATA_ACTIVE_FROM" => "ASC"];
 		$res_i = CIBlockElement::GetList([],$arFilter,false,false,$arSelect);
 
 		while($a = $res_i->GetNextElement()){
@@ -135,13 +129,8 @@ class In {
 
 
 		$this->arCusResult = $arResult;
+		$_SESSION['data_size']=$this->getSize($this->arCusResult);
 
-	}
-
-	public function delItem($arr){
-		foreach($arr as $key => $value){
-			CIBlockElement::Delete($key);
-		}
 	}
 
 	public function render() {
@@ -178,5 +167,42 @@ class In {
 
 		$this->rend .= '</div>';
 		echo $this->rend;
+	}
+
+	public function update($old,$new,$iblock_id){
+		$old_data = $old;
+		$new_data = $new;
+		foreach($old_data as $key1 => $value1) {
+
+			foreach($new_data as $key2 => $value2){
+
+				if($value1['id'] == $value2['id']){
+
+					if(array_diff($value1,$value2)){
+
+						foreach($value2 as $key => $val){
+							$this->PROP[strtoupper($key)] = $val;
+						}
+						$fields = [
+							"NAME" =>$value2["name"],
+							"PROPERTY_VALUES" => $this->PROP,
+							"ACTIVE" => "Y"
+						];
+						$this->cbe->Update($key1,$fields);
+
+					}
+					unset($new_data[$key2]);//Удаляем запись из массива для дальнейшего добавления отсутствующих записей в БД
+					break;
+				}else{
+
+					CIBlockElement::Delete($key1);// если товар отсутствует в файле - удаляем целиком запись из БД
+					//либо
+					//$this->cbe->Update($key1,["ACTIVE" => "N"]);
+
+				}
+			}
+		}
+		$this->addToBlock($new_data,$iblock_id);
+
 	}
 }
