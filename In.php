@@ -196,8 +196,7 @@ class In {
 				}else{
 
 					CIBlockElement::Delete($key1);// если товар отсутствует в файле - удаляем целиком запись из БД
-					//либо
-					//$this->cbe->Update($key1,["ACTIVE" => "N"]);
+					
 
 				}
 			}
