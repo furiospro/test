@@ -13,6 +13,7 @@ class In {
 	public $id_add =[];
 	public $iblock_id;
 	public $rend;
+	public $time_x;
 	public $filemt=null;
 	public function __construct($path) {
 
@@ -62,26 +63,9 @@ class In {
 
 			$this->getElemFromBlock($this->iblock_id);
 
-
 	}
 
 
-	public function getSize($result=[]) {
-		if(empty($result)){
-			$result = $this->result;
-		}
-		$h1 = false;
-		$str = '';
-		foreach($result as $item) {
-			if(!$h1) {
-				$str = strtolower(implode("", array_keys($item)));
-				$h1 = true;
-			}
-			$str .= strtolower(implode("", $item));
-		}
-
-		return mb_strlen($str, '8bit');
-	}
 
 	public function addToBlock($result,$iblock_id){
 
@@ -115,6 +99,7 @@ class In {
 
 		while($a = $res_i->GetNextElement()){
 			$arFields = $a->GetFields();
+
 			$prop = $this->cbe::GetProperty($iblock_id,$arFields["ID"]);
 			$arProps = [];
 			while($pr = $prop->GetNext()){
@@ -126,7 +111,17 @@ class In {
 
 
 		$this->arCusResult = $arResult;
-		$this->update($this->arCusResult,$this->result,$this->iblock_id);
+		if(!$this->arCusResult){
+			$this->addToBlock($this->result,$this->iblock_id);
+		}else{
+			if(isset($_SESSION['date_change']) && $_SESSION['date_change'] == $this->filemt){
+
+			}else{
+				$this->update($this->arCusResult,$this->result,$this->iblock_id);
+			}
+			
+		}
+
 		$_SESSION['date_change']=$this->filemt;
 
 
@@ -183,6 +178,7 @@ class In {
 
 							$this->PROP[strtoupper($key)] = $val;
 						}
+						debug($this->PROP);
 						$fields = [
 							"NAME" =>$value2["name"],
 							"PROPERTY_VALUES" => $this->PROP,
