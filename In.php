@@ -13,7 +13,6 @@ class In {
 	public $id_add =[];
 	public $iblock_id;
 	public $rend;
-	public $time_x;
 	public $filemt=null;
 	public function __construct($path) {
 
@@ -184,7 +183,6 @@ class In {
 
 							$this->PROP[strtoupper($key)] = $val;
 						}
-						debug($this->PROP);
 						$fields = [
 							"NAME" =>$value2["name"],
 							"PROPERTY_VALUES" => $this->PROP,
