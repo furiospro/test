@@ -4,6 +4,7 @@ class In {
 	public $arCusResult=[];
 	public $result = [];
 	public $head =[];
+	public $file = null;
 	private static $instance = null;
 	public $tr_head = false;
 	public $obLoad;
@@ -12,15 +13,20 @@ class In {
 	public $id_add =[];
 	public $iblock_id;
 	public $rend;
+	public $time_x;
+	public $filemt=null;
 	public function __construct($path) {
+
+		$this->filemt = filemtime($path);
+
 		if(empty($this->iblock_id)){
 			$this->iblock_id = 2;
 		}
-		$a = new CCSVData('R',false);
-		$a->LoadFile($path);
-		$a->SetDelimiter();
+		$this->file = new CCSVData('R',false);
+		$this->file->LoadFile($path);
+		$this->file->SetDelimiter();
 		$j =0;
-		while($arRes = $a->Fetch()){
+		while($arRes = $this->file->Fetch()){
 			if(!$this->head){
 				for($i = 0; $i < count($arRes); $i++){
 					$this->head[] = $arRes[$i];
@@ -50,21 +56,13 @@ class In {
 	}
 
 	public function init() {
-			$_SESSION['data_size']='';
+
 			require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 			CModule::IncludeModule('iblock');
 			$this->cbe = new CIBlockElement;
 
 			$this->getElemFromBlock($this->iblock_id);
 
-			if($this->getSize($this->result) == $_SESSION['data_size']){
-
-			}else{
-				$this->update($this->arCusResult,$this->result,$this->iblock_id);
-
-				$this->getElemFromBlock($this->iblock_id);
-
-			}
 
 	}
 
@@ -129,7 +127,9 @@ class In {
 
 
 		$this->arCusResult = $arResult;
-		$_SESSION['data_size']=$this->getSize($this->arCusResult);
+		$this->update($this->arCusResult,$this->result,$this->iblock_id);
+		$_SESSION['date_change']=$this->filemt;
+
 
 	}
 
@@ -181,8 +181,10 @@ class In {
 					if(array_diff($value1,$value2)){
 
 						foreach($value2 as $key => $val){
+
 							$this->PROP[strtoupper($key)] = $val;
 						}
+						debug($this->PROP);
 						$fields = [
 							"NAME" =>$value2["name"],
 							"PROPERTY_VALUES" => $this->PROP,
@@ -196,7 +198,7 @@ class In {
 				}else{
 
 					CIBlockElement::Delete($key1);// если товар отсутствует в файле - удаляем целиком запись из БД
-					
+
 
 				}
 			}

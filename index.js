@@ -7,10 +7,10 @@ function sendAjax(order) {
 		data:{pageAjax: order},
 		success: function (response) {
 			console.log(response);
-			if(response === false){
-				alert('Изменений нет!');
-			}else{
+			if(response === true){
 				location.reload();
+			}else{
+				alert('Изменений нет!');
 			}
 		}
 	,error: function(error1,error2,error3){

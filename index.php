@@ -9,7 +9,7 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 	switch($_POST['pageAjax']){
 		case 'check':
 
-			if(isset($_SESSION['data_size']) && $_SESSION['data_size'] == $a->getSize()){
+			if(isset($_SESSION['date_change']) && $_SESSION['date_change'] == $a->filemt){
 				$_SESSION['change'] =false;
 			}else{
 				$_SESSION['change'] = true;
@@ -23,9 +23,10 @@ $a->init();
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 
 ?><div class="container">
-<div class="inp">
-			<button class="btn btn-success" onclick="sendAjax('check');">Проверить</button>
-		</div>
+
+	<div class="inp">
+		<button class="btn btn-success" onclick="sendAjax('check');">Проверить</button>
+	</div>
 		<?php
 		$a->render();
 		$APPLICATION->IncludeComponent("bitrix:catalog", "template1", ["ACTION_VARIABLE" => "action",    // Название переменной, в которой передается действие
