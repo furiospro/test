@@ -13,7 +13,6 @@ class In {
 	public $id_add =[];
 	public $iblock_id;
 	public $rend;
-	public $time_x;
 	public $filemt=null;
 	public function __construct($path) {
 
