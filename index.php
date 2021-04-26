@@ -2,7 +2,7 @@
 session_start();
 require_once ($_SERVER["DOCUMENT_ROOT"]."/In.php");
 
-$a = In::getInstance($_SERVER["DOCUMENT_ROOT"].'/local/templates/blog/test.csv');
+$a = new In($_SERVER["DOCUMENT_ROOT"].'/local/templates/blog/test.csv');
 
 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
 
