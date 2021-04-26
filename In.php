@@ -5,7 +5,7 @@ class In {
 	public $result = [];
 	public $head =[];
 	public $file = null;
-	private static $instance = null;
+	//private static $instance = null;
 	public $tr_head = false;
 	public $obLoad;
 	public $cbe;
@@ -13,9 +13,10 @@ class In {
 	public $id_add =[];
 	public $iblock_id;
 	public $rend;
+	public $time_x;
 	public $filemt=null;
 	public function __construct($path) {
-
+		require_once ($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/csv_data.php");
 		$this->filemt = filemtime($path);
 
 		if(empty($this->iblock_id)){
@@ -40,7 +41,7 @@ class In {
 			}
 		}
 	}
-	public static function getInstance($path)
+	/*public static function getInstance($path)
 	{
 
 		if (empty(self::$instance))
@@ -52,7 +53,7 @@ class In {
 		}
 
 		return self::$instance;
-	}
+	}*/
 
 	public function init() {
 
@@ -118,7 +119,7 @@ class In {
 			}else{
 				$this->update($this->arCusResult,$this->result,$this->iblock_id);
 			}
-			
+
 		}
 
 		$_SESSION['date_change']=$this->filemt;
