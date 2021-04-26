@@ -5,7 +5,6 @@ class In {
 	public $result = [];
 	public $head =[];
 	public $file = null;
-	//private static $instance = null;
 	public $tr_head = false;
 	public $obLoad;
 	public $cbe;
@@ -41,19 +40,6 @@ class In {
 			}
 		}
 	}
-	/*public static function getInstance($path)
-	{
-
-		if (empty(self::$instance))
-		{
-
-			require_once ($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/csv_data.php");
-			self::$instance = new self($path);
-
-		}
-
-		return self::$instance;
-	}*/
 
 	public function init() {
 
